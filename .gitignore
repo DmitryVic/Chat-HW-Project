@@ -1,3 +1,9 @@
+# VS Code
+touch .gitignore
+*/build/
+CMakeCache.txt
+CMakeFiles/
+*.cmake
 # Prerequisites
 *.d
 
