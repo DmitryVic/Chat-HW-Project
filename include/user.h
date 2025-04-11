@@ -2,7 +2,9 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "chat.h"
+
+// Исправлена ошибка объявления chat.h
+class Chat;
 
 /*
 Класс User взаимодействует с классами:

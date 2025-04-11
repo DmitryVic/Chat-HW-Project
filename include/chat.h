@@ -1,9 +1,11 @@
 #pragma once
-#include "user.h"
 #include <string>
 #include <vector>
 #include <memory>
 #include <utility>
+
+// Исправлена ошибка объявления user.h
+class User;
 
 /*
 Chat - абстрактный класс, наследники ChatPrivate, ChatHared
