@@ -1,46 +1,9 @@
 #include "user.h"
 #include "chat.h"
 #include "database.h"
+#include "exept.h"
 #include <exception>
 
-//создаем класс от класса exception
-// Ошибка передаваемых данных
-class ErrorCreateUserData : public std::exception 
-{
-public:
-	//переопределяем виртуальный метод обещая
-	//не использовать исключения внутри
-    virtual const char* what() const noexcept override   
-    {
-        return "Пользователь не создан, коректные данные";
-    }
-};
-
-//создаем класс от класса exception
-// Ошибка логин уже занят
-class ErrorCreateUserExists : public std::exception
-{
-public:
-	//переопределяем виртуальный метод обещая
-	//не использовать исключения внутри
-    virtual const char* what() const noexcept override   
-    {
-        return "Пользователь не создан, такой пользователь уже существует";
-    }
-};
-
-//создаем класс от класса exception
-// Ошибка базы данных
-class ErrorCreateNotDataB : public std::exception
-{
-public:
-	//переопределяем виртуальный метод обещая
-	//не использовать исключения внутри
-    virtual const char* what() const noexcept override   
-    {
-        return "Техническая неисправность";
-    }
-};
 
 User::User(std::string login, std::string pasword, std::string name, std::weak_ptr<Database> dataB)
 {
@@ -76,4 +39,19 @@ User::User(std::string login, std::string pasword, std::string name, std::weak_p
 User::~User()
 {
     
+}
+
+// Получить логин
+std::string User::getLogin() const{
+    return this->_login;
+}
+
+// Получить имя
+std::string User::getName() const{
+    return this->_name;
+}
+
+// Получить список чатов пользователя
+std::vector<std::shared_ptr<Chat>> User::getConnectionChatId() const{
+    return this->_connectionChatId;
 }

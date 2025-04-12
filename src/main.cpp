@@ -1,6 +1,10 @@
 #include <iostream>
 #include "database.h"
 #include "colorConsole.h"
+#include "user.h"
+#include "autorization.h"
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -34,10 +38,43 @@ int main(int argc, char const *argv[])
    
     setlocale(LC_ALL, "ru-RU.UTF-8");   // Русский вывод в консоле
 
+    try 
+    {
+        std::shared_ptr<Database> database(new Database());
 
-    Database* database = new Database();
-    cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
 
-    delete database;
+        cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
+
+        auto user1 = autorization::regUser("login", "password", "name", database);
+        if (user1) {
+            std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
+        } else {
+            std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
+        }
+        
+        cout << "Имитирую смену юзера" << endl;
+        user1 = autorization::regUser("login2", "password", "name", database);
+        if (user1) {
+            std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
+        } else {
+            std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
+        }
+
+        cout << "Пытаюсь создать юзера с неправильными данными" << endl;
+        user1 = autorization::regUser("", "", "", database);
+        if (user1) {
+            std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
+        } else {
+            std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
+        }
+        
+        
+        
+    }
+    catch(exception& e)
+    {
+        cout << e.what();
+    }
+    cout << "STOP" << endl;
     return 0;
 }
