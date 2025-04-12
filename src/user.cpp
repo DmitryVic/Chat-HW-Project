@@ -61,3 +61,10 @@ std::string User::getPass() const{
 std::vector<std::shared_ptr<Chat>> User::getConnectionChatId() const{
     return this->_connectionChatId;
 }
+
+// Добавить пользователя в чат общий или при личных сообщениях
+// вернет true - при успехе, false - при ошибке
+bool User::setChat(std::shared_ptr<Chat> chat){
+    this->_connectionChatId.push_back(chat);
+    return true; // Возвращаем true при успехе
+}

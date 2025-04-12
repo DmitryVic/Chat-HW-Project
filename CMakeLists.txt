@@ -12,6 +12,7 @@ add_executable(Chat
     src/user.cpp
     src/database.cpp
     src/autorization.cpp
+    src/chatPrivate.cpp
     )
 
 # Подключить заголовки из include/

@@ -45,9 +45,8 @@ public:
     std::vector<std::shared_ptr<Chat>> getConnectionChatId() const;
 
     // Добавить пользователя в чат общий или при личных сообщениях
-    // Добавить проверку на ChatPrivate, если в нем уже 2, то отклонить заявку
     // вернет true - при успехе, false - при ошибке
-    bool setChat(std::shared_ptr<Chat> user);
+    bool setChat(std::shared_ptr<Chat> chat);
 
 };
 

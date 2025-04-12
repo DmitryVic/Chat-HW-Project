@@ -41,3 +41,14 @@ public:
     }
 };
 
+// Ошибка Чата
+class ErrorChat : public std::exception 
+{
+public:
+	//переопределяем виртуальный метод обещая
+	//не использовать исключения внутри
+    virtual const char* what() const noexcept override   
+    {
+        return "Чат - отказано в доступе";
+    }
+};

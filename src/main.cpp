@@ -3,6 +3,8 @@
 #include "colorConsole.h"
 #include "user.h"
 #include "autorization.h"
+#include "chatPrivate.h"
+#include "chat.h"
 #include <string>
 #include <vector>
 
@@ -53,8 +55,8 @@ int main(int argc, char const *argv[])
         }
         
         cout << "Имитирую регистрацию нового юзера" << endl;
-        user1 = autorization::regUser("login2", "password", "name", database);
-        if (user1) {
+        auto user2 = autorization::regUser("login2", "password", "name", database);
+        if (user2) {
             std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
         } else {
             std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
@@ -68,15 +70,22 @@ int main(int argc, char const *argv[])
             std::cout << _RED << "Ошибка авторизации пользователя\n" <<  _CLEAR;
         }
 
-        cout << "Пытаюсь создать юзера с неправильными данными" << endl;
-        user1 = autorization::regUser("", "", "", database);
-        if (user1) {
-            std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
-        } else {
-            std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
-        }
+        // cout << "Пытаюсь создать юзера с неправильными данными" << endl;
+        // user1 = autorization::regUser("", "", "", database);
+        // if (user1) {
+        //     std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
+        // } else {
+        //     std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
+        // }
         
-        
+        // Создаем shared_ptr чата, передавая weak_ptr пользователей
+        std::shared_ptr<Chat> chat1 = std::make_shared<ChatPrivate>(
+            std::weak_ptr<User>(user1), 
+            std::weak_ptr<User>(user2)
+        );
+        user1->setChat(chat1);
+        user2->setChat(chat1);
+        cout << "STOP" << endl;
         
     }
     catch(exception& e)
