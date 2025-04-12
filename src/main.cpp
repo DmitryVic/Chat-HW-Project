@@ -52,12 +52,20 @@ int main(int argc, char const *argv[])
             std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
         }
         
-        cout << "Имитирую смену юзера" << endl;
+        cout << "Имитирую регистрацию нового юзера" << endl;
         user1 = autorization::regUser("login2", "password", "name", database);
         if (user1) {
             std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
         } else {
             std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
+        }
+
+        cout << "Имитирую логирование юзера" << endl;
+        user1 = autorization::autorizUser("login", "password", database);
+        if (user1) {
+            std::cout << _GREEN << "Пользователь успешно авторизирован!\n" <<  _CLEAR;
+        } else {
+            std::cout << _RED << "Ошибка авторизации пользователя\n" <<  _CLEAR;
         }
 
         cout << "Пытаюсь создать юзера с неправильными данными" << endl;

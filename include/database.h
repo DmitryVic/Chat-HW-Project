@@ -16,10 +16,9 @@ public:
     Database();
     ~Database();
 
-    // Добавить пользовател
-    // вернет true - при успехе, false - при ошибке
+    // Добавить пользовател принимает и временные, и существующие объекты
     // !! Проверка на уникальность логина осуществляется в классе User, можно использовать без проверок
-    void setUser(std::shared_ptr<User>&& user);
+    void setUser(std::shared_ptr<User> user);
 
     // Получить список всех пользователей
     std::vector<std::shared_ptr<User>> getAllUsersInChat() const;

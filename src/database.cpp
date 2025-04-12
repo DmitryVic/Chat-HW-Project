@@ -15,11 +15,10 @@ Database::~Database()
     
 }
 
-// Добавить пользовател
-// вернет true - при успехе, false - при ошибке
+// Добавить пользовател принимает и временные, и существующие объекты
 // !! Проверка на уникальность логина осуществляется в классе User, можно использовать без проверок
-void Database::setUser(std::shared_ptr<User>&& user){
-    this->usersInChat.push_back(user);
+void Database::setUser(std::shared_ptr<User> user){
+    this->usersInChat.push_back(std::move(user));       // Перемещаем, чтобы избежать копирования
 }
 
 // Получить список всех пользователей

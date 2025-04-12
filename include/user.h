@@ -38,6 +38,9 @@ public:
     // Получить имя
     std::string getName() const;
 
+    // Получить проль не безопасный
+    std::string getPass() const;
+
     // Получить список чатов пользователя
     std::vector<std::shared_ptr<Chat>> getConnectionChatId() const;
 

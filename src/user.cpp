@@ -51,6 +51,12 @@ std::string User::getName() const{
     return this->_name;
 }
 
+// Получить проль не безопасный
+std::string User::getPass() const{
+    return this->_pasword;
+}
+
+
 // Получить список чатов пользователя
 std::vector<std::shared_ptr<Chat>> User::getConnectionChatId() const{
     return this->_connectionChatId;
