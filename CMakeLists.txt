@@ -9,7 +9,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Добавить исходники
 add_executable(Chat 
     src/main.cpp 
-    src/User.cpp
+    src/user.cpp
+    src/database.cpp
+    src/autorization.cpp
     )
 
 # Подключить заголовки из include/

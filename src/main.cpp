@@ -1,4 +1,7 @@
 #include <iostream>
+#include "database.h"
+#include "colorConsole.h"
+
 using namespace std;
 
 int main(int argc, char const *argv[])
@@ -25,9 +28,16 @@ int main(int argc, char const *argv[])
         Chat - родительский класс ChatPrivate, ChatHared
         ChatPrivate - объект User хранит указатели на чаты, что обеспечивает доступ к уже существующим приватным чатам
         ChatHared - объект User хранит указатели на чаты, что обеспечивает доступ к уже существующим общим чатам
-        Autorization - создает объект класса User, или осуществляет логирование пользователя по уже имеющимся объектам User
+        
+        Autorization - набор функций  в пространстве именa utorization, создает объект класса User, или осуществляет логирование пользователя по уже имеющимся объектам User
     */
+   
+    setlocale(LC_ALL, "ru-RU.UTF-8");   // Русский вывод в консоле
 
-    cout << "Test programm!" << endl;
+
+    Database* database = new Database();
+    cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
+
+    delete database;
     return 0;
 }

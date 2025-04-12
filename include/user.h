@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "database.h"
 
 // Исправлена ошибка объявления chat.h
 class Chat;
@@ -21,9 +22,15 @@ private:
     std::string _pasword;
     std::string _name;
     std::vector<std::shared_ptr<Chat>> _connectionChatId;
+    std::weak_ptr<Database> _dataB; //База данных одна на всех, но требуется для получения списка пользователей
 public:
     // Передать логин, пароль, имя
-    User(std::string login, std::string pasword, std::string name);
+    // Осуществляет проверку на уникальность логина и пустоту файлов
+    // иначе выдает исключения ErrorCreateUserExists, ErrorCreateUserData
+    // weak_ptr<Database> требуется передать для поиска по базе данных такихе пользователе при создании
+    User(std::string login, std::string pasword, std::string name, std::weak_ptr<Database> dataB);
+    
+    ~User();
     
     // Получить логин
     std::string getLogin() const;
@@ -37,9 +44,8 @@ public:
     // Добавить пользователя в чат общий или при личных сообщениях
     // Добавить проверку на ChatPrivate, если в нем уже 2, то отклонить заявку
     // вернет true - при успехе, false - при ошибке
-    bool setChat(std::shared_ptr<Chat>);
+    bool setChat(std::shared_ptr<Chat> user);
 
-    ~User();
 };
 
 
