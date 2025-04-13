@@ -11,7 +11,6 @@ add_executable(Chat
     src/main.cpp 
     src/user.cpp
     src/database.cpp
-    src/autorization.cpp
     src/chatPrivate.cpp
     )
 

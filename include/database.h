@@ -27,7 +27,20 @@ public:
     // !! Проверять на пустоту nullptr !!
     std::shared_ptr<User> getOneUserByLogin(std::string login) const;
 
+    
+    // Создает объект User и добавляет его в Database
+    // Возвращает shared_ptr<User> при успехе или nullptr при ошибке
+    std::shared_ptr<User> regUser(
+        const std::string& login,
+        const std::string& password,
+        const std::string& name
+    );
 
+    // Возвращает shared_ptr<User> при успехе или nullptr при ошибке
+    std::shared_ptr<User> autorizUser(
+        const std::string& login,
+        const std::string& password
+    );
 };
 
 

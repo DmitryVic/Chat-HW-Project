@@ -2,7 +2,6 @@
 #include "database.h"
 #include "colorConsole.h"
 #include "user.h"
-#include "autorization.h"
 #include "chatPrivate.h"
 #include "chat.h"
 #include <string>
@@ -29,13 +28,12 @@ int main(int argc, char const *argv[])
 
     Классы:
         User - класс пользователя, хранит указатели на чаты, что обеспечивает доступ к ChatPrivate ChatHared
-        Database - обмен данными авторизации, должен хранить указатели на всех пользователей shared_ptr нужен в том числе для преобразования 
-            в weak_ptr в классах Chat
+        Database - обмен данными авторизации, должен хранить указатели на всех пользователей shared_ptr
+            создает пользователей и осуществляет их логирование
         Chat - родительский класс ChatPrivate, ChatHared
         ChatPrivate - объект User хранит указатели на чаты, что обеспечивает доступ к уже существующим приватным чатам
         ChatHared - объект User хранит указатели на чаты, что обеспечивает доступ к уже существующим общим чатам
         
-        Autorization - набор функций  в пространстве именa utorization, создает объект класса User, или осуществляет логирование пользователя по уже имеющимся объектам User
     */
    
     setlocale(LC_ALL, "ru-RU.UTF-8");   // Русский вывод в консоле
@@ -47,7 +45,7 @@ int main(int argc, char const *argv[])
 
         cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
 
-        auto user1 = autorization::regUser("login", "password", "name", database);
+        auto user1 = database->regUser("login", "password", "name");
         if (user1) {
             std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
         } else {
@@ -55,7 +53,7 @@ int main(int argc, char const *argv[])
         }
         
         cout << "Имитирую регистрацию нового юзера" << endl;
-        auto user2 = autorization::regUser("login2", "password", "name", database);
+        auto user2 = database->regUser("login2", "password", "name");
         if (user2) {
             std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
         } else {
@@ -63,7 +61,7 @@ int main(int argc, char const *argv[])
         }
 
         cout << "Имитирую логирование юзера" << endl;
-        user1 = autorization::autorizUser("login", "password", database);
+        user1 = database->autorizUser("login", "password");
         if (user1) {
             std::cout << _GREEN << "Пользователь успешно авторизирован!\n" <<  _CLEAR;
         } else {
