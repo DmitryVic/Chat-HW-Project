@@ -25,19 +25,21 @@ std::string User::getPass() const{
 }
 
 
-// Получение и добавление в чаты для приваток
+// Получение чатов
 std::vector<std::shared_ptr<ChatPrivate>> User::getConnectionChatPrivate() const {
     return _connectChatPrivate;
 }
 
+
+std::vector<std::shared_ptr<ChatHared>> User::getConnectionChatHared() const {
+    return _connectChatHared;
+}
+
+
+//Добавление в чаты
 bool User::setChat(std::shared_ptr<ChatPrivate> chat) {
     _connectChatPrivate.push_back(chat);
     return true;
-}
-
-// Получение и добавление в чаты для общих чатов
-std::vector<std::shared_ptr<ChatHared>> User::getConnectionChatHared() const {
-    return _connectChatHared;
 }
 
 bool User::setChat(std::shared_ptr<ChatHared> chat) {
