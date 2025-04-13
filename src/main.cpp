@@ -7,8 +7,100 @@
 #include "chat.h"
 #include <string>
 #include <vector>
+#include <limits> //Для  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 using namespace std;
+
+void chatStart(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
+    char menu = '9';
+
+    while (menu != '0')
+    {
+        cout << _GREY_BG << "\n\n\t\tЗдраствуйте - " << userAuthorization->getName() << "\n" << _CLEAR << endl << endl;
+        cout << "Для выбора введите значение."<< endl 
+            << _CYAN << " Меню:" << _CLEAR << endl
+            << "0 - Выход в главное меню;" << endl
+            << "1 - Открыть список приватных чатов - написать пользователю;" << endl
+            << "2 - Открыть список общих чатов - создать общий чат или зайти в имеющийся" << endl
+            << "Ведите значение" << endl;
+        cin >> menu;
+        switch (menu)
+        {
+        case '0':
+            cout << _GREEN << "Возврат в главное меню!" << _CLEAR;
+            return;
+        case '1':
+            
+            break;
+        case '2':
+            
+            break;
+        default:
+            cout << _YELLOW << "Не верно введено значение, попробуй еще раз" << _CLEAR << endl;
+            break;
+        }
+    }
+    
+}
+
+void authorization(shared_ptr<Database>& db){
+    cout << _GREY_BG << "\n\n\t\tАвторизация\n" << _CLEAR << endl << endl;
+    string login;
+    string pass;
+
+    cin.clear(); // Сбрасывает флаги ошибок
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очищает буфер до новой строки
+
+    cout << "Введите логин" << endl;
+    getline(cin, login);
+
+    cout << "Введите пароль" << endl;
+    getline(cin, pass);
+    
+    auto userAuthorization = db->autorizUser(login, pass);
+    if (!userAuthorization)
+    {
+        cout << _MAGENTA << "Не удалось авторизоваться, возврат в главное меню" << _CLEAR << endl;
+        return;
+    }
+    else
+    {
+        cout << _GREEN << "Авторизация выполнена!" << _CLEAR;
+        chatStart(db, userAuthorization);
+    }
+    
+}
+
+void reg(shared_ptr<Database>& db){
+    cout << _GREY_BG << "\n\n\t\tРегистрация\n" << _CLEAR << endl << endl;
+    string login;
+    string pass;
+    string name;
+
+    cin.clear(); // Сбрасывает флаги ошибок
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очищает буфер до новой строки
+
+    cout << "Введите логин" << endl;
+    getline(cin, login);
+
+    cout << "Введите пароль" << endl;
+    getline(cin, pass);
+
+    cout << "Введите свое имя" << endl;
+    getline(cin, name);
+
+    auto userAuthorization = db->regUser(login, pass, name);
+    if (!userAuthorization)
+    {
+        cout << _MAGENTA << "Не удалось зарегистрироваться, возврат в главное меню" << _CLEAR << endl;
+        return;
+    }
+    else
+    {
+        cout << name << _GREEN << " - Вы успешно зарегистрировались" << _CLEAR;
+        chatStart(db, userAuthorization);
+    }    
+}
 
 int main(int argc, char const *argv[])
 {
@@ -39,84 +131,38 @@ int main(int argc, char const *argv[])
    
     setlocale(LC_ALL, "ru-RU.UTF-8");   // Русский вывод в консоле
 
-    try 
+    char menu = '9';
+    shared_ptr<Database> database(new Database());
+    cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
+
+    while (menu != '0')
     {
-        std::shared_ptr<Database> database(new Database());
-
-
-        cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
-
-        auto user1 = database->regUser("login", "password", "Максим");
-        if (user1) {
-            std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
-        } else {
-            std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
-        }
-        
-        cout << "Имитирую регистрацию нового юзера" << endl;
-        auto user2 = database->regUser("login2", "password", "Олег");
-        if (user2) {
-            std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
-        } else {
-            std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
-        }
-
-
-
-        
-        // Создаем shared_ptr чата, передавая weak_ptr пользователей
-        std::shared_ptr<ChatPrivate> chat1 = std::make_shared<ChatPrivate>(
-            std::weak_ptr<User>(user1), 
-            std::weak_ptr<User>(user2)
-        );
-        user1->setChat(chat1);
-        user2->setChat(chat1);
-        
-
-        cout << "\nПользователь 1 зашел в чат\n" << chat1->showUsers() << chat1->getAllMessage(user1) << endl;
-        chat1->addMessage(user1, "Привет, как дела?");
-        chat1->addMessage(user1, "Чего не отвечаешь?");
-        cout << "\nПользователь 1 зашел в чат\n" << chat1->showUsers() << chat1->getAllMessage(user1) << endl;
-        
-        cout << "\nПользователь 2 зашел в чат\n" << chat1->showUsers() << chat1->getAllMessage(user2) << endl;
-        chat1->addMessage(user2, "Привет, я был занят");
-        cout << "\nПользователь 2 зашел в чат\n" << chat1->showUsers() << chat1->getAllMessage(user2) << endl;
-
-        cout << "Имитирую регистрацию нового юзера" << endl;
-        user2 = database->regUser("login3", "password", "Алена");
-        if (user2) {
-            std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
-        } else {
-            std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
+        cout << _GREY_BG << "\n\n\t\tДобо пожаловать в чат!\n" << _CLEAR << endl << endl;
+        cout << "Для выбора введите значение."<< endl 
+            << _CYAN << " Меню:" << _CLEAR << endl
+            << "0 - Закрыть приложение;" << endl
+            << "1 - Авторизация;" << endl
+            << "2 - Регистрация" << endl
+            << "Ведите значение" << endl;
+        cin >> menu;
+        switch (menu)
+        {
+        case '0':
+            cout << _GREEN << "Досвидания!" << _CLEAR;
+            return 0;
+        case '1':
+            authorization(database);
+            break;
+        case '2':
+            reg(database);
+            break;
+        default:
+            cout << _YELLOW << "Не верно введено значение, попробуй еще раз" << _CLEAR << endl;
+            break;
         }
 
-        // Создаем shared_ptr чата, передавая weak_ptr пользователей
-        std::shared_ptr<ChatHared> chat2 = std::make_shared<ChatHared>(
-            std::weak_ptr<User>(user1), 
-            std::weak_ptr<User>(user2),
-            "Чат беседа"
-        );
-        user1->setChat(chat2);
-        user2->setChat(chat2);
-        
-        cout << "\nПользователь 1 зашел в чат\n" << chat2->showUsers() << chat2->getAllMessage(user1) << " -  " << chat2->showUsersNamber() << endl;
-        chat2->addMessage(user1, "Привет, как дела?");
-        chat2->addMessage(user1, "Чего не отвечаешь?");
-        cout << "\nПользователь 1 зашел в чат\n" << chat2->showUsers() << chat2->getAllMessage(user1) << " -  " << chat2->showUsersNamber() << endl;
-        
-        user2 = database->getOneUserByLogin("login2");
-        chat2->addUserInChat(user2);
-        user2->setChat(chat2);
-        cout << "\nПользователь 2 зашел в чат\n" << chat2->showUsers() << chat2->getAllMessage(user2) << " -  " << chat2->showUsersNamber() << endl;
-        chat2->addMessage(user2, "Привет, я был занят");
-        cout << "\nПользователь 2 зашел в чат\n" << chat2->showUsers() << chat2->getAllMessage(user2) << " -  " << chat2->showUsersNamber() << endl;
-
-        
     }
-    catch(exception& e)
-    {
-        cout << e.what();
-    }
-    cout << "STOP" << endl;
+    
+    
     return 0;
 }
