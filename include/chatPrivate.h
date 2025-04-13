@@ -13,9 +13,7 @@ public:
     ChatPrivate(std::weak_ptr<User> thisUser, std::weak_ptr<User> otherUser);
     ~ChatPrivate();
     
-    // Должен передать количество участников в ChatHared или имя пользователя
-    // добавить дополнительные поля для классов - счетчик для ChatHared, ptr для ChatPrivate
-    // !!! проверять на пустоту historyChat в функцииt, проверять на пустоту string при вызове
+    // Передать имена всех участников
     std::string showUsers() const override;
 
     // Должен предать все сообщения из historyChat, форматируя текст относительно пользователя User, тоесть того, кто открыл чат

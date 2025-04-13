@@ -4,8 +4,9 @@
 #include <memory>
 #include "database.h"
 
-// Исправлена ошибка объявления chat.h
-class Chat;
+
+class ChatPrivate;
+class ChatHared;
 
 /*
 Класс User взаимодействует с классами:
@@ -19,8 +20,8 @@ private:
     std::string _login;
     std::string _pasword;
     std::string _name;
-    std::vector<std::shared_ptr<Chat>> _connectionChatId;
-    std::weak_ptr<Database> _dataB; //База данных одна на всех, но требуется для получения списка пользователей
+    std::vector<std::shared_ptr<ChatPrivate>> _connectChatPrivate;
+    std::vector<std::shared_ptr<ChatHared>> _connectChatHared;
 public:
     // Передать логин, пароль, имя
     // Проверка на создание в БД, БД владееет пользователями, создание Юзера через нее
@@ -37,12 +38,21 @@ public:
     // Получить проль не безопасный
     std::string getPass() const;
 
+    /*
+    Хоел изначально реализовать методы ниже шаблонами, но как оказалось лучше
+    показалось боле безопасно и более читаемо
+    Изначально хранил в одном векторе общего интерфейса Chat, но можно вызывать только те методы, которые объявлены в этом базовом классе
+    а для ChatHared есть дополнительный функционал и в данной реализации можно легко подсчитать приватные и общие чаты
+    */
+
     // Получить список чатов пользователя
-    std::vector<std::shared_ptr<Chat>> getConnectionChatId() const;
+    std::vector<std::shared_ptr<ChatPrivate>> getConnectionChatPrivate() const;
+    std::vector<std::shared_ptr<ChatHared>> getConnectionChatHared() const;
 
     // Добавить пользователя в чат общий или при личных сообщениях
     // вернет true - при успехе, false - при ошибке
-    bool setChat(std::shared_ptr<Chat> chat);
+    bool setChat(std::shared_ptr<ChatPrivate> chat);
+    bool setChat(std::shared_ptr<ChatHared> chat);
 
 };
 

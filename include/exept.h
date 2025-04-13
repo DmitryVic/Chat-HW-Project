@@ -41,6 +41,18 @@ public:
     }
 };
 
+// Ошибка доступа  
+class ErrorChatAccess : public std::exception 
+{
+public:
+	//переопределяем виртуальный метод обещая
+	//не использовать исключения внутри
+    virtual const char* what() const noexcept override   
+    {
+        return "Ошибка доступа";
+    }
+};
+
 // Ошибка Чата
 class ErrorChatMess : public std::exception 
 {

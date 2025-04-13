@@ -25,14 +25,22 @@ std::string User::getPass() const{
 }
 
 
-// Получить список чатов пользователя
-std::vector<std::shared_ptr<Chat>> User::getConnectionChatId() const{
-    return this->_connectionChatId;
+// Получение и добавление в чаты для приваток
+std::vector<std::shared_ptr<ChatPrivate>> User::getConnectionChatPrivate() const {
+    return _connectChatPrivate;
 }
 
-// Добавить пользователя в чат общий или при личных сообщениях
-// вернет true - при успехе, false - при ошибке
-bool User::setChat(std::shared_ptr<Chat> chat){
-    this->_connectionChatId.push_back(chat);
-    return true; // Возвращаем true при успехе
+bool User::setChat(std::shared_ptr<ChatPrivate> chat) {
+    _connectChatPrivate.push_back(chat);
+    return true;
+}
+
+// Получение и добавление в чаты для общих чатов
+std::vector<std::shared_ptr<ChatHared>> User::getConnectionChatHared() const {
+    return _connectChatHared;
+}
+
+bool User::setChat(std::shared_ptr<ChatHared> chat) {
+    _connectChatHared.push_back(chat);
+    return true;
 }
