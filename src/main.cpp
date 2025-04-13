@@ -45,7 +45,7 @@ int main(int argc, char const *argv[])
 
         cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
 
-        auto user1 = database->regUser("login", "password", "name");
+        auto user1 = database->regUser("login", "password", "Максим");
         if (user1) {
             std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
         } else {
@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
         }
         
         cout << "Имитирую регистрацию нового юзера" << endl;
-        auto user2 = database->regUser("login2", "password", "name");
+        auto user2 = database->regUser("login2", "password", "Олег");
         if (user2) {
             std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
         } else {
@@ -67,14 +67,6 @@ int main(int argc, char const *argv[])
         } else {
             std::cout << _RED << "Ошибка авторизации пользователя\n" <<  _CLEAR;
         }
-
-        // cout << "Пытаюсь создать юзера с неправильными данными" << endl;
-        // user1 = autorization::regUser("", "", "", database);
-        // if (user1) {
-        //     std::cout << _GREEN << "Пользователь успешно создан!\n" <<  _CLEAR;
-        // } else {
-        //     std::cout << _RED << "Ошибка создания пользователя\n" <<  _CLEAR;
-        // }
         
         // Создаем shared_ptr чата, передавая weak_ptr пользователей
         std::shared_ptr<Chat> chat1 = std::make_shared<ChatPrivate>(
@@ -83,7 +75,19 @@ int main(int argc, char const *argv[])
         );
         user1->setChat(chat1);
         user2->setChat(chat1);
-        cout << "STOP" << endl;
+        
+        cout << "Пользователь 1 зашел в чат\n" << chat1->getAllMessage(user1) << endl;
+        chat1->addMessage(user1, "Привет, как дела?");
+        chat1->addMessage(user1, "Чего не отвечаешь?");
+        cout << "Пользователь 1 зашел в чат\n" << chat1->getAllMessage(user1) << endl;
+        
+        cout << "Пользователь 2 зашел в чат\n" << chat1->getAllMessage(user2) << endl;
+        chat1->addMessage(user2, "Привет, я был занят");
+        cout << "Пользователь 2 зашел в чат\n" << chat1->getAllMessage(user2) << endl;
+
+        cout << chat1->getAllMessage(user1) << endl;
+
+        
         
     }
     catch(exception& e)

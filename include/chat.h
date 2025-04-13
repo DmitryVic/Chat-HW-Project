@@ -37,11 +37,6 @@ public:
     // !!! проверять на пустоту historyChat в функцииt, проверять на пустоту string при вызове
     virtual std::string getAllMessage(std::weak_ptr<User> user) const = 0;
 
-    // Указатель взять из dataBace shared_ptr и из него сделать weak_ptr
-    // Добавить пользователя в чат общий или при личных сообщениях
-    // Добавить проверку на ChatPrivate, если в нем уже 2, то отклонить заявку
-    // вернет true - при успехе, false - при ошибке
-    virtual bool setUsersInChat(std::weak_ptr<User> user) = 0;
 
     // Добавить сообщение
     // передаем указатель отправителя и само сообщение, записываем в historyChat

@@ -28,18 +28,6 @@ public:
     }
 };
 
-//создаем класс от класса exception
-// Ошибка базы данных
-class ErrorCreateNotDataB : public std::exception
-{
-public:
-	//переопределяем виртуальный метод обещая
-	//не использовать исключения внутри
-    virtual const char* what() const noexcept override   
-    {
-        return "Техническая неисправность";
-    }
-};
 
 // Ошибка Чата
 class ErrorChat : public std::exception 
@@ -49,6 +37,18 @@ public:
 	//не использовать исключения внутри
     virtual const char* what() const noexcept override   
     {
-        return "Чат - отказано в доступе";
+        return "Ошибка приложения";
+    }
+};
+
+// Ошибка Чата
+class ErrorChatMess : public std::exception 
+{
+public:
+	//переопределяем виртуальный метод обещая
+	//не использовать исключения внутри
+    virtual const char* what() const noexcept override   
+    {
+        return "Вы не ввели сообщение. Введите текст, прежде чем отправить сообщение.";
     }
 };
