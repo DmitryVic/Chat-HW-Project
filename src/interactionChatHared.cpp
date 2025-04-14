@@ -16,7 +16,7 @@ using namespace std;
 // void openChatHared(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization, shared_ptr<ChatHared>& chatP){}
 
 void openChatHared(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization, shared_ptr<ChatHared>& chatP){
-    cout << _GREEN << "Зашли в приватный чат"  << _CLEAR << endl;
+    cout << _GREEN << "Зашли в общий чат"  << _CLEAR << endl;
     string userInput;                                    // Вводимое пользователем знначение
     while (userInput != "0")
     {

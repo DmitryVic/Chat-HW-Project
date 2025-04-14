@@ -2,9 +2,17 @@ cmake_minimum_required(VERSION 3.10)
 project(Chat)
 
 # СПринудительно установить стандарт c++ 20
-set(CMAKE_CXX_STANDART 20)
-set(CMAKE_CXX_STANDART_REQUIRED ON)
+# Исправление опечатки в STANDART -> STANDARD
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Настройки только для MSVC
+# Для MinGW в Windows
+# Решает проблему с локализацией
+if(MINGW)
+    add_compile_options(-finput-charset=UTF-8 -fexec-charset=UTF-8)
+endif()
 
 # Добавить исходники
 add_executable(Chat 

@@ -23,7 +23,8 @@ void openChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
         cout << chatP->getAllMessage(userAuthorization) << endl << endl;
         cout    << _CYAN << "Напишите сообщение:" << _CLEAR << endl
                 << "0 - отправте \"0\" чтобы выйти" << endl;
-        cin >> userInput;
+        //cin >> userInput;
+        std::getline(std::cin >> std::ws, userInput);  // Читаем всю строку
         if (userInput != "0")                           // при выходи пропускаем запись
         {
             chatP->addMessage(userAuthorization, userInput);
@@ -53,7 +54,15 @@ void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuth
                 << "N - ID чата из списка, кому написать?" << endl
                 << "Ведите значение" << endl;
         
-        cin >> userNamberInput;
+        // Обработка ввода
+        if (!(cin >> userNamberInput)) {
+            cin.clear(); // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
+            userNamberInput = 999; // Предотвращаем выход из цикла
+            continue;
+        }
+
         if (userNamberInput == 0) // Выходим при 0
             return;
 
@@ -70,6 +79,7 @@ void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuth
         
     }
 }
+
 
 void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
     
@@ -106,7 +116,15 @@ void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthoriza
                 << "N - ID пользователя из списка, кому написать?" << endl
                 << "Ведите значение" << endl;
         
-        cin >> userNamberInput;
+        // Обработка ввода
+        if (!(cin >> userNamberInput)) {
+            cin.clear(); // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
+            userNamberInput = 999; // Предотвращаем выход из цикла
+            continue;
+        }
+
         if (userNamberInput == 0) // Выходим при 0
             return;
 
@@ -164,7 +182,16 @@ void menuChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
             << "1 - Написать пользователю;" << endl
             << "2 - Зайти в имеющийся чат" << endl
             << "Ведите значение" << endl;
-        cin >> menu;
+
+        // Обработка ввода
+        if (!(cin >> menu)) {
+            cin.clear(); // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
+            char menu = '9'; // Предотвращаем выход из цикла
+            continue;
+        }
+
         switch (menu)
         {
         case '0':

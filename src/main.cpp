@@ -12,6 +12,14 @@
 #include "template.h"
 #include "interactionChatPrvate.h"
 #include "interactionChatHared.h"
+#include <clocale> //для правильной ло
+#include <locale>
+
+//#define NOMINMAX  // Отключает min/max макросы Windows
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN  // Уменьшает количество включаемых заголовков Windows
+#include <windows.h>
+#endif
 
 using namespace std;
 
@@ -28,9 +36,17 @@ void chatStart(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization, sh
             << _CYAN << " Меню:" << _CLEAR << endl
             << "0 - Выход в главное меню;" << endl
             << "1 - Открыть список приватных чатов - написать пользователю;" << endl
-            << "2 - Открыть список общих чатов - создать общий чат или зайти в имеющийся" << endl
+            << "2 - Открыть общий чат" << endl
             << "Ведите значение" << endl;
-        cin >> menu;
+        // Обработка ввода
+        if (!(cin >> menu)) {
+            cin.clear(); // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
+            menu = '9'; // Предотвращаем выход из цикла
+            continue;
+        }
+
         switch (menu)
         {
         case '0':
@@ -111,32 +127,21 @@ void reg(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
 
 int main(int argc, char const *argv[])
 {
-    /*
-    В данном файле должен быть реализован главный функционал
-    
-    (функция) главное меню
-        выход
-        зарегистрироваться
-            (функция) регистрация
-        залогиниться или назад
-            открыть список чатов
-                (функция) выбрать чат 
-                (функция) назад
-            открыть список контактов
-                (функция) написать в личное сообщение в первый раз
-                (функция) назад
 
-    Классы:
-        User - класс пользователя, хранит указатели на чаты, что обеспечивает доступ к ChatPrivate ChatHared
-        Database - обмен данными авторизации, должен хранить указатели на всех пользователей shared_ptr
-            создает пользователей и осуществляет их логирование
-        Chat - родительский класс ChatPrivate, ChatHared
-        ChatPrivate - объект User хранит указатели на чаты, что обеспечивает доступ к уже существующим приватным чатам
-        ChatHared - объект User хранит указатели на чаты, что обеспечивает доступ к уже существующим общим чатам
-        
-    */
-   
-    setlocale(LC_ALL, "ru-RU.UTF-8");   // Русский вывод в консоле
+    // Универсальная настройка локали
+    setlocale(LC_ALL, "ru_RU.UTF-8");
+
+    // Настройки для Windows
+    // исправляет не коректную запись в string русских символов в консоле
+    // распространяет локализацию на весь проект 
+    #ifdef _WIN32
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+    #endif
+    
+    // Для Linux/Mac
+    // пока не требуется, но можно допонить макросом как WIN32
+    //std::locale::global(std::locale("ru_RU.UTF-8"));
 
     char menu = '9';
     shared_ptr<Database> database(new Database());
@@ -152,7 +157,16 @@ int main(int argc, char const *argv[])
             << "1 - Авторизация;" << endl
             << "2 - Регистрация" << endl
             << "Ведите значение" << endl;
-        cin >> menu;
+
+        // Обработка ввода
+        if (!(cin >> menu)) {
+            cin.clear(); // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
+            menu = '9'; // Предотвращаем выход из цикла
+            continue;
+        }
+
         switch (menu)
         {
         case '0':
