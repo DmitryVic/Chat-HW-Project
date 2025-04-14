@@ -54,6 +54,9 @@ public:
     bool setChat(std::shared_ptr<ChatPrivate> chat);
     bool setChat(std::shared_ptr<ChatHared> chat);
 
+        // проверяет есть чаты с данным узером
+    bool userInChatsP(std::weak_ptr<User> user) const;
+
 };
 
 

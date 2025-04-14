@@ -26,6 +26,8 @@ public:
     // вернет true - при успехе, false - при ошибке
     bool addMessage(std::weak_ptr<User> sender, const std::string& msg) override;
 
+    //есть ли в данном чате пользователь
+    bool userInChat(std::weak_ptr<User> user) const;
 };
 
 

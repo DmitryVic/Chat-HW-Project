@@ -138,3 +138,19 @@ bool ChatPrivate::addMessage(std::weak_ptr<User> sender, const std::string& msg)
     }
     return false;
 }
+
+//есть ли в данном чате пользователь
+bool ChatPrivate::userInChat(std::weak_ptr<User> user) const{
+    size_t sizeUsersInChat = usersInChat.size();
+    if (sizeUsersInChat != 0) // если не пустой
+    {
+        for (size_t i = 0; i < sizeUsersInChat; i++)
+        {
+            if (usersInChat[i].lock()->getLogin() == user.lock()->getLogin()) //проверяем перебором логин с логином полученым
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
