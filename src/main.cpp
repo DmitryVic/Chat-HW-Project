@@ -11,13 +11,14 @@
 #include <limits> //Для  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 #include "template.h"
 #include "interactionChatPrvate.h"
+#include "interactionChatHared.h"
 
 using namespace std;
 
 
 
 
-void chatStart(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
+void chatStart(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization, shared_ptr<ChatHared>& haredChat){
     char menu = '9';
 
     while (menu != '0')
@@ -39,7 +40,7 @@ void chatStart(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
             menuChatPrivate(db, userAuthorization);
             break;
         case '2':
-            //menuChatHared(db, userAuthorization);
+            openChatHared(db, userAuthorization, haredChat);
             break;
         default:
             cout << _YELLOW << "Не верно введено значение, попробуй еще раз" << _CLEAR << endl;
@@ -49,7 +50,7 @@ void chatStart(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
     
 }
 
-void authorization(shared_ptr<Database>& db){
+void authorization(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
     cout << _GREY_BG << "\n\n\t\tАвторизация\n" << _CLEAR << endl << endl;
     string login;
     string pass;
@@ -72,12 +73,12 @@ void authorization(shared_ptr<Database>& db){
     else
     {
         cout << _GREEN << "Авторизация выполнена!" << _CLEAR;
-        chatStart(db, userAuthorization);
+        chatStart(db, userAuthorization, haredChat);
     }
     
 }
 
-void reg(shared_ptr<Database>& db){
+void reg(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
     cout << _GREY_BG << "\n\n\t\tРегистрация\n" << _CLEAR << endl << endl;
     string login;
     string pass;
@@ -104,7 +105,7 @@ void reg(shared_ptr<Database>& db){
     else
     {
         cout << name << _GREEN << " - Вы успешно зарегистрировались" << _CLEAR;
-        chatStart(db, userAuthorization);
+        chatStart(db, userAuthorization, haredChat);
     }    
 }
 
@@ -139,6 +140,7 @@ int main(int argc, char const *argv[])
 
     char menu = '9';
     shared_ptr<Database> database(new Database());
+    shared_ptr<ChatHared> haredChat(new ChatHared("Общий чат"));
     cout << _GREEN <<  "Готов к работе" <<  _CLEAR << std::endl;
 
     while (menu != '0')
@@ -157,10 +159,10 @@ int main(int argc, char const *argv[])
             cout << _GREEN << "Досвидания!" << _CLEAR;
             return 0;
         case '1':
-            authorization(database);
+            authorization(database, haredChat);
             break;
         case '2':
-            reg(database);
+            reg(database, haredChat);
             break;
         default:
             cout << _YELLOW << "Не верно введено значение, попробуй еще раз" << _CLEAR << endl;

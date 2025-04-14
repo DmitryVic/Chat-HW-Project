@@ -44,13 +44,13 @@ void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuth
         size_t sizeChatPrivate = userAuthorization->getConnectionChatPrivate().size();
         for (size_t i = 0; i < sizeChatPrivate; i++)
         {
-            cout << "[ " << i + 1 << " ] "  << userAuthorization->getConnectionChatPrivate()[i]->showUsers() << endl;
+            cout << "ID [ " << i + 1 << " ] "  << userAuthorization->getConnectionChatPrivate()[i]->showUsers() << endl;
             chatIndexList.push_back(i + 1);
         }
         cout << endl;
         cout    << _CYAN << " Меню:" << _CLEAR << endl
                 << "0 - Назад;" << endl
-                << "N - номер чата из списка, кому написать?" << endl
+                << "N - ID чата из списка, кому написать?" << endl
                 << "Ведите значение" << endl;
         
         cin >> userNamberInput;
@@ -95,7 +95,7 @@ void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthoriza
                 }
                 else
                 {
-                    cout << "[ " << i + 1 << " ] " << userList[i]->getName() << endl;
+                    cout << "ID [ " << i + 1 << " ] " << userList[i]->getName() << endl;
                     userIndexList.push_back(i + 1);
                 }
             }
@@ -103,7 +103,7 @@ void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthoriza
         }
         cout    << _CYAN << " Меню:" << _CLEAR << endl
                 << "0 - Назад;" << endl
-                << "N - номер пользователя из списка, кому написать?" << endl
+                << "N - ID пользователя из списка, кому написать?" << endl
                 << "Ведите значение" << endl;
         
         cin >> userNamberInput;

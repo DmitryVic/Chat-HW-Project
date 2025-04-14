@@ -33,21 +33,12 @@ std::vector<std::shared_ptr<ChatPrivate>> User::getConnectionChatPrivate() const
 }
 
 
-std::vector<std::shared_ptr<ChatHared>> User::getConnectionChatHared() const {
-    return _connectChatHared;
-}
-
-
 //Добавление в чаты
 bool User::setChat(std::shared_ptr<ChatPrivate> chat) {
     _connectChatPrivate.push_back(chat);
     return true;
 }
 
-bool User::setChat(std::shared_ptr<ChatHared> chat) {
-    _connectChatHared.push_back(chat);
-    return true;
-}
 
 // проверяет есть чаты с данным узером
 bool User::userInChatsP(std::weak_ptr<User> user) const{

@@ -7,6 +7,10 @@
 
 class ChatPrivate : public Chat
 {
+protected:
+//Список участников
+std::vector<std::weak_ptr<User>> usersInChat;
+
 public:
     // при создни нужно указать пользователей для usersInChat, при этом historyChat будет пустым без истории
     // getAllMessage выводит сообщений нет
@@ -14,7 +18,7 @@ public:
     ~ChatPrivate();
     
     // Передать имена всех участников
-    std::string showUsers() const override;
+    std::string showUsers() const;
 
     // Должен предать все сообщения из historyChat, форматируя текст относительно пользователя User, тоесть того, кто открыл чат
     // !!! проверять на пустоту historyChat в функцииt, проверять на пустоту string при вызове

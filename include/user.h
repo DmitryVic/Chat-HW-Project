@@ -21,7 +21,6 @@ private:
     std::string _pasword;
     std::string _name;
     std::vector<std::shared_ptr<ChatPrivate>> _connectChatPrivate;
-    std::vector<std::shared_ptr<ChatHared>> _connectChatHared;
 public:
     // Передать логин, пароль, имя
     // Проверка на создание в БД, БД владееет пользователями, создание Юзера через нее
@@ -47,12 +46,10 @@ public:
 
     // Получить список чатов пользователя
     std::vector<std::shared_ptr<ChatPrivate>> getConnectionChatPrivate() const;
-    std::vector<std::shared_ptr<ChatHared>> getConnectionChatHared() const;
 
     // Добавить пользователя в чат общий или при личных сообщениях
     // вернет true - при успехе, false - при ошибке
     bool setChat(std::shared_ptr<ChatPrivate> chat);
-    bool setChat(std::shared_ptr<ChatHared> chat);
 
         // проверяет есть чаты с данным узером
     bool userInChatsP(std::weak_ptr<User> user) const;

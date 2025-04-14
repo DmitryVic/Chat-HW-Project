@@ -11,41 +11,16 @@
 
 
 // Конструктор Деструктор
-ChatHared::ChatHared(std::weak_ptr<User> thisUser, std::weak_ptr<User> otherUser, std::string nameChat){
+ChatHared::ChatHared(std::string nameChat)
+{
     if (nameChat.size() == 0)
         throw ErrorChat();                              // Пустое название чата
 
-    if (thisUser.expired() || otherUser.expired())      // если указывает на не существующий объект
-        throw ErrorChat();
-
-    usersInChat.push_back(thisUser);                    // Добавляем пользователей в чат
-    usersInChat.push_back(otherUser);
     this->_nameChat = nameChat;                         // Название чата
 }
+
 ChatHared::~ChatHared() = default;
 
-
-// Передать string пользователей
-std::string ChatHared::showUsers() const{
-    std::string output;
-    if (this->usersInChat.size() == 0){                  //вряд ли такое будет, но на всякий случай
-        output = "Пользователей нет";
-        return output;}
-
-    size_t sizeUsersInChat = usersInChat.size();
-    for (size_t i = 0; i < sizeUsersInChat; i++)
-    {
-        output += usersInChat[i].lock()->getName();     // Добавляем имя
-        if (i + 1 != sizeUsersInChat)                   // если не последний в списке ", "
-            output += ", ";
-    }
-    return output;
-}
-
-// Получить число пользователей в чате
-std::string ChatHared::showUsersNamber() const{
-    return std::to_string(this->usersInChat.size()); // to_string - явное преобразование в строку, нельзя передать size_t
-}
 
 // Получить все сообщения
 std::string ChatHared::getAllMessage(std::weak_ptr<User> user) const{
@@ -121,21 +96,6 @@ bool ChatHared::addMessage(std::weak_ptr<User> sender, const std::string& msg){
     return false;
 }
 
-//Добавить еще пользователя в чат
-bool ChatHared::addUserInChat(std::weak_ptr<User> user){
-    try
-    {
-        if (user.expired())                             // если указывает на не существующий объект
-            throw ErrorChat();
-        usersInChat.push_back(user);                    // Добавляем пользователей в чат
-        return true;
-    }
-    catch (const ErrorChat& e) {                        //обрабатываем исключения, дополня их
-        std::cerr << _RED << "(Код ошибки 8) Отправитель не найден: " << e.what() << _CLEAR << std::endl;
-        return false;
-    } 
-    return false;                                       // не достижимо, подстаховка
-}
 
 // Получить название чата
 std::string ChatHared::getNameChat() const{

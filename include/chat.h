@@ -22,14 +22,10 @@ protected:
         .second - string Message
     */
     std::vector<std::pair<std::weak_ptr<User>, std::string>> historyChat;
-    //Список участников
-    std::vector<std::weak_ptr<User>> usersInChat;
+    
 
 public:
     virtual ~Chat() = default;
-    
-    // Передать имена всех участников
-    virtual std::string showUsers() const = 0;
 
     // Должен предать все сообщения из historyChat, форматируя текст относительно пользователя User, тоесть того, кто открыл чат
     // !!! проверять на пустоту historyChat в функцииt, проверять на пустоту string при вызове
