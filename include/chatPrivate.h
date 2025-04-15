@@ -5,10 +5,11 @@
 #include <memory>
 #include <utility>
 
+// приватный чат хранит историю чата, пользователей
 class ChatPrivate : public Chat
 {
 protected:
-//Список участников
+// Список участников
 std::vector<std::weak_ptr<User>> usersInChat;
 
 public:
@@ -17,11 +18,10 @@ public:
     ChatPrivate(std::weak_ptr<User> thisUser, std::weak_ptr<User> otherUser);
     ~ChatPrivate();
     
-    // Передать имена всех участников
+    // Получить имена всех участников
     std::string showUsers() const;
 
     // Должен предать все сообщения из historyChat, форматируя текст относительно пользователя User, тоесть того, кто открыл чат
-    // !!! проверять на пустоту historyChat в функцииt, проверять на пустоту string при вызове
     std::string getAllMessage(std::weak_ptr<User> user) const override;
 
 

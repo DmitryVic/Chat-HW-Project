@@ -13,7 +13,7 @@
 using namespace std;
 
 
-
+//открывает приватный чат, получает от пользователя сообщеня при "0" - выход, передать базу данных, залогированнного пользователя, выброный чат
 void openChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization, shared_ptr<ChatPrivate>& chatP){
     cout << _GREEN << "Зашли в приватный чат"  << _CLEAR << endl;
     string userInput;                                    // Вводимое пользователем знначение
@@ -23,7 +23,6 @@ void openChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
         cout << chatP->getAllMessage(userAuthorization) << endl << endl;
         cout    << _CYAN << "Напишите сообщение:" << _CLEAR << endl
                 << "0 - отправте \"0\" чтобы выйти" << endl;
-        //cin >> userInput;
         std::getline(std::cin >> std::ws, userInput);  // Читаем всю строку
         if (userInput != "0")                           // при выходи пропускаем запись
         {
@@ -33,6 +32,8 @@ void openChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
 
 }
 
+
+// Позволяет пользователю выбрать чат  из имеющихся, передать базу данных, залогированнного пользователя
 void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
     vector<size_t> chatIndexList;                                        // для сохранения индексов чатов
     size_t userNamberInput = 999;                                    // для получения номера пользователя и открытия чата
@@ -56,11 +57,10 @@ void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuth
         
         // Обработка ввода
         if (!(cin >> userNamberInput)) {
-            cin.clear(); // Сброс флагов ошибок
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cin.clear();                                                    // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');            // Очистка буфера
             cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
-            userNamberInput = 999; // Предотвращаем выход из цикла
-            continue;
+            userNamberInput = 999;                                          // Предотвращаем возможное зацикливание
         }
 
         if (userNamberInput == 0) // Выходим при 0
@@ -68,11 +68,11 @@ void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuth
 
         for (size_t i = 0; i < sizeChatPrivate; i++)
         {
-            if (chatIndexList[i] == userNamberInput)            // если значение пользователя совпало с записанными индексами
+            if (chatIndexList[i] == userNamberInput)                        // если значение пользователя совпало с записанными индексами
             {
                 openChatPrivate(db, userAuthorization, userAuthorization->getConnectionChatPrivate()[i]); 
-            } else if (i + 1 == sizeChatPrivate)                // в последней итерации если не нашли значение выводим сообщение
-            {
+            } else if (i + 1 == sizeChatPrivate)                            // в последней итерации если не нашли значение выводим сообщение
+            {   
                 cout << _YELLOW << "Вы ввель не коректное значение, попробуйте еще раз" << _CLEAR  << endl;
             }   
         }
@@ -81,14 +81,15 @@ void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuth
 }
 
 
+// Предоставляет пользователю выбор отальных юзеров, которым можно написать, передать базу данных, залогированнного пользователя
 void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
     
-    size_t userNamberInput = 999;                                    // для получения номера пользователя и открытия чата
+    size_t userNamberInput = 999;                                          // для получения номера пользователя и открытия чата
     while (userNamberInput != 0)
     {
         vector<size_t> userIndexList;                                        // для сохранения индексов пользователей
-        vector<shared_ptr<User>> userList = db->getAllUsersInChat();    // берем копию списка пользователей для безопасности
-        size_t sizeChatPrivate = userList.size();                       // размер полученного листа пользователей                
+        vector<shared_ptr<User>> userList = db->getAllUsersInChat();        // берем копию списка пользователей для безопасности
+        size_t sizeChatPrivate = userList.size();                           // размер полученного листа пользователей                
 
         cout << _GREY_BG << "\n\n\t\tСписок пользователей " << "\n" << _CLEAR << endl << endl;
         if (userList.size() <= 1)
@@ -118,59 +119,60 @@ void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthoriza
         
         // Обработка ввода
         if (!(cin >> userNamberInput)) {
-            cin.clear(); // Сброс флагов ошибок
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cin.clear();                                                    // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');            // Очистка буфера
             cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
-            userNamberInput = 999; // Предотвращаем выход из цикла
+            userNamberInput = 999;                                          // Предотвращаем возможное зацикливание
             continue;
         }
 
-        if (userNamberInput == 0) // Выходим при 0
+        if (userNamberInput == 0)                                           // Выходим при 0
             return;
 
-        // НЕ КОРРЕКТНАЯ ПРОВЕРКА НУЖНО ПРОСТОУБЕДИТЬСЯ ЧТО ЕСТЬ ЭТАЦИФРА В ВЕКТОРЕ МОЖНО СДЕЛАТЬ КАК РАЗ ШАБЛОН
-        if (contains(userIndexList, userNamberInput))            // если значение пользователя совпало с записанными индексами заменено userIndexList[i-1]
+        if (contains(userIndexList, userNamberInput))                       // проверяет есть ли элемент в векторе шаблонным методом
         {
             // Если данный чат еще не создан - запрашиваем через метод класса юзер, который перебирает все чаты, запрашивая у метода чата наличие юзера
             if (!userAuthorization->userInChatsP(weak_ptr<User>(userList[userNamberInput - 1])))
             {
-                shared_ptr<ChatPrivate> chatP = make_shared<ChatPrivate>( //создаем чат
+                shared_ptr<ChatPrivate> chatP = make_shared<ChatPrivate>(       //создаем чат
                 weak_ptr<User>(userAuthorization), 
                 weak_ptr<User>(userList[userNamberInput - 1])
                 );
-                userAuthorization->setChat(chatP);                  // Записали нашему пользователю созданый чат
-                userList[userNamberInput - 1]->setChat(chatP);      // Записали выбраному пользомателю созданый чат
-                openChatPrivate(db, userAuthorization, chatP);      // Запускаем чат
+                userAuthorization->setChat(chatP);                               // Записали нашему пользователю созданый чат
+                userList[userNamberInput - 1]->setChat(chatP);                  // Записали выбраному пользомателю созданый чат
+                openChatPrivate(db, userAuthorization, chatP);                  // Запускаем чат
             }
             else
             {
                 cout << _YELLOW << "У вас уже есть чат с данным пользователем" << _CLEAR  << endl;
             }
-            
-        } else                // в последней итерации если не нашли значение выводим сообщение
+        } else                                                                  // в последней итерации если не нашли значение выводим сообщение
         {
             cout << _YELLOW << "Вы ввели не коректное значение, попробуйте еще раз" << _CLEAR  << endl;
         } 
     }
 }
 
+
+// Предоставляет пользователю выбор: написать пользователю, зайти в  меню имеющихся приватных чатов
+// Передать базу данных, залогированнного пользователя
 void menuChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization){
-    char menu = '9';
+    char menu = '9'; //для записи ввода от пользователя
 
     while (menu != '0')
     {
         cout << _GREY_BG << "\n\n\t\tПриватные чаты пользователя - " << userAuthorization->getName() << "\n" << _CLEAR << endl << endl;
         cout << _BLUE << "Список ваших приватных чатов" << _CLEAR  << endl;
-        if (userAuthorization->getConnectionChatPrivate().size() == 0)
+        if (userAuthorization->getConnectionChatPrivate().size() == 0)                          //если вектор чатов пуст
         {
             cout << _BLUE << "История чатов пуста, напишите кому-нибудь!" << _CLEAR  << endl;
         }
         else
         {
-            size_t sizeChatPrivate = userAuthorization->getConnectionChatPrivate().size();
+            size_t sizeChatPrivate = userAuthorization->getConnectionChatPrivate().size();      //размер вектора чатов
             for (size_t i = 0; i < sizeChatPrivate; i++)
             {
-                cout << userAuthorization->getConnectionChatPrivate()[i]->showUsers() << endl;
+                cout << userAuthorization->getConnectionChatPrivate()[i]->showUsers() << endl;  //отображаем чаты
             }
             cout << endl;
         }
@@ -185,10 +187,10 @@ void menuChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
 
         // Обработка ввода
         if (!(cin >> menu)) {
-            cin.clear(); // Сброс флагов ошибок
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cin.clear();                                                                         // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');                                 // Очистка буфера
             cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
-            char menu = '9'; // Предотвращаем выход из цикла
+            char menu = '9';                                                                     // Предотвращаем возможное зацикливание
             continue;
         }
 
@@ -198,16 +200,16 @@ void menuChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
             cout << _GREEN << "Назад!" << _CLEAR;
             return;
         case '1':
-            createChatPrivate(db, userAuthorization);
+            createChatPrivate(db, userAuthorization);                                               //в меню выбора юзеров
             break;
         case '2':
-            if (userAuthorization->getConnectionChatPrivate().size() == 0)
+            if (userAuthorization->getConnectionChatPrivate().size() == 0)                          //если вектор чатов пуст
             {
                 cout << _BLUE << "История чатов пуста, напишите кому-нибудь!" << _CLEAR  << endl;
             }
             else
             {
-                UserChoiceChatPrivate(db, userAuthorization); // Для запроса у пользователя а какой чат открыть, далее в этой Ф уже будет открыт чат
+                UserChoiceChatPrivate(db, userAuthorization);                                       //в меню выбора чатов
             }
             break;
         default:

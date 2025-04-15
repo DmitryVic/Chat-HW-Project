@@ -25,8 +25,8 @@ ChatPrivate::ChatPrivate(std::weak_ptr<User> thisUser, std::weak_ptr<User> other
 
 ChatPrivate::~ChatPrivate() = default;
 
-
-std::string ChatPrivate::showUsers() const{             // можно будет доработать полд вывод собеседника
+// Получить имена всех участников
+std::string ChatPrivate::showUsers() const{
     std::string out = "";
     auto u1 = usersInChat[0].lock();
     auto u2 = usersInChat[1].lock();
@@ -45,7 +45,7 @@ std::string ChatPrivate::showUsers() const{             // можно будет
     return out;
 }
 
-
+// Должен предать все сообщения из historyChat, форматируя текст относительно пользователя User, тоесть того, кто открыл чат
 std::string ChatPrivate::getAllMessage(std::weak_ptr<User> user) const{
     try
     {
@@ -58,8 +58,8 @@ std::string ChatPrivate::getAllMessage(std::weak_ptr<User> user) const{
             throw ErrorChatAccess();
         }
         
-        std::string output;
-        if (this->historyChat.size() == 0)
+        std::string output;                            //выходное значение
+        if (this->historyChat.size() == 0)              // ессли вектор historyChat пуст, история чата пуста
         {
             output += _CYAN;
             output += "\nИстоия чата пуста. Напишите сообщение первым!\n\n";
@@ -68,7 +68,7 @@ std::string ChatPrivate::getAllMessage(std::weak_ptr<User> user) const{
         }
         else
         {
-            size_t longHistoryChat = this->historyChat.size();
+            size_t longHistoryChat = this->historyChat.size(); //размер historyChat, истории чата
             for (size_t i = 0; i < longHistoryChat; i++)
             {
                 // указатель на пользователя в historyChat и user привожу к shared_ptr и сравниваю
@@ -96,23 +96,26 @@ std::string ChatPrivate::getAllMessage(std::weak_ptr<User> user) const{
     }
     catch (const ErrorChat& e) {
         std::cerr << _RED << "(Код ошибки 5) Пользователь удален: " << e.what() << _CLEAR << std::endl;
-        return _RED + std::string("Ошибка") + _CLEAR; // Возвращаем сообщение об ошибке
+        return _RED + std::string("Ошибка") + _CLEAR;                       // Возвращаем сообщение об ошибке
     }
     catch (const ErrorChatAccess& e) {
         std::cerr << _RED << "(Код ошибки 9) Приватный чат, отказано в доступе: " << e.what() << _CLEAR << std::endl;
-        return _RED + std::string("Ошибка") + _CLEAR; // Возвращаем сообщение об ошибке
+        return _RED + std::string("Ошибка") + _CLEAR;                       // Возвращаем сообщение об ошибке
     }
-    return ""; // Запасной вариант (технически недостижим)
+    return "";                                                              // Запасной вариант (технически недостижим)
 }
 
 
+// Добавить сообщение
+// передаем указатель отправителя и само сообщение, записываем в historyChat
+// вернет true - при успехе, false - при ошибке
 bool ChatPrivate::addMessage(std::weak_ptr<User> sender, const std::string& msg){
     try
     {
-        if (sender.expired())                            // если sender указывает на не существующий объект
+        if (sender.expired())                                              // если sender указывает на не существующий объект
             throw ErrorChat();
 
-        if (msg.size() == 0)                            // если сообщение пустое
+        if (msg.size() == 0)                                                // если сообщение пустое
             throw ErrorChatMess();
         
         // Если пользователи в чате есть и указанный пользователь не относится ни к 1 ни ко 2, то отказать в доступе, хотя это ошибка приложения уже
@@ -121,18 +124,18 @@ bool ChatPrivate::addMessage(std::weak_ptr<User> sender, const std::string& msg)
             throw ErrorChatAccess();
         }
 
-        this->historyChat.emplace_back(sender, msg);    //emplace_back - избегает лишнего копирования, сразу передает значения
+        this->historyChat.emplace_back(sender, msg);                         //emplace_back - избегает лишнего копирования, сразу передает значения
         return true;
     }
-    catch (const ErrorChatMess& e) {                    //обрабатываем исключения, дополня их
+    catch (const ErrorChatMess& e) {                                         //обрабатываем исключения, дополня их
         std::cerr << _RED << "(Код ошибки 3) Не верные данные: " << e.what() << _CLEAR << std::endl;
         return false;
     }
-    catch (const ErrorChat& e) {                        //обрабатываем исключения, дополня их
+    catch (const ErrorChat& e) {                                            //обрабатываем исключения, дополня их
         std::cerr << _RED << "(Код ошибки 4) Отправитель не найден: " << e.what() << _CLEAR << std::endl;
         return false;
     }
-    catch (const ErrorChatAccess& e) {
+    catch (const ErrorChatAccess& e) {                                      //обрабатываем исключения, дополня их
         std::cerr << _RED << "(Код ошибки 10) Приватный чат, отказано в доступе: " << e.what() << _CLEAR << std::endl;
         return false;
     }
@@ -141,12 +144,12 @@ bool ChatPrivate::addMessage(std::weak_ptr<User> sender, const std::string& msg)
 
 //есть ли в данном чате пользователь
 bool ChatPrivate::userInChat(std::weak_ptr<User> user) const{
-    size_t sizeUsersInChat = usersInChat.size();
-    if (sizeUsersInChat != 0) // если не пустой
+    size_t sizeUsersInChat = usersInChat.size();                              // размер списка участников usersInChat
+    if (sizeUsersInChat != 0)                                                 // если не пустой
     {
         for (size_t i = 0; i < sizeUsersInChat; i++)
         {
-            if (usersInChat[i].lock()->getLogin() == user.lock()->getLogin()) //проверяем перебором логин с логином полученым
+            if (usersInChat[i].lock()->getLogin() == user.lock()->getLogin()) //проверяем перебором логин с логином полученым (уникальное значение)
             {
                 return true;
             }

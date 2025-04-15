@@ -28,7 +28,6 @@ public:
     virtual ~Chat() = default;
 
     // Должен предать все сообщения из historyChat, форматируя текст относительно пользователя User, тоесть того, кто открыл чат
-    // !!! проверять на пустоту historyChat в функцииt, проверять на пустоту string при вызове
     virtual std::string getAllMessage(std::weak_ptr<User> user) const = 0;
 
 

@@ -33,21 +33,21 @@ std::vector<std::shared_ptr<ChatPrivate>> User::getConnectionChatPrivate() const
 }
 
 
-//Добавление в чаты
+//Добавление в приватный чат
 bool User::setChat(std::shared_ptr<ChatPrivate> chat) {
     _connectChatPrivate.push_back(chat);
     return true;
 }
 
 
-// проверяет есть чаты с данным узером
+// проверяет есть чаты с данным узером std::weak_ptr<User> user
 bool User::userInChatsP(std::weak_ptr<User> user) const{
     size_t sizeConnectChatPrivate = this->_connectChatPrivate.size();
     if (sizeConnectChatPrivate != 0)                                    // если не пустой вектор
     {
         for (size_t i = 0; i < sizeConnectChatPrivate; i++)
         {
-            if (this->_connectChatPrivate[i]->userInChat(user))     // если переданный юзер есть в даном чате, обращаемся к чату проверить
+            if (this->_connectChatPrivate[i]->userInChat(user))          // обращаемся к чату проверить есть ли в данном чате пользователь std::weak_ptr<User> user
             {
                 return true;
             }

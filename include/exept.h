@@ -2,7 +2,6 @@
 #include <exception>
 
 
-//создаем класс от класса exception
 // Ошибка передаваемых данных
 class ErrorCreateUserData : public std::exception 
 {
@@ -15,7 +14,7 @@ public:
     }
 };
 
-//создаем класс от класса exception
+
 // Ошибка логин уже занят
 class ErrorCreateUserExists : public std::exception
 {
@@ -52,6 +51,7 @@ public:
         return "Ошибка доступа";
     }
 };
+
 
 // Ошибка Чата
 class ErrorChatMess : public std::exception 

@@ -1,24 +1,23 @@
-#include <iostream>
-#include <memory>
 #include "database.h"
 #include "colorConsole.h"
 #include "user.h"
 #include "chatPrivate.h"
 #include "chathared.h"
 #include "chat.h"
-#include <string>
-#include <vector>
-#include <limits> //Для  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 #include "template.h"
 #include "interactionChatPrvate.h"
 #include "interactionChatHared.h"
-#include <clocale> //для правильной ло
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
+#include <limits> //Для  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+#include <clocale> //для правильной лолокализации
 #include <locale>
 
-//#define NOMINMAX  // Отключает min/max макросы Windows
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN  // Уменьшает количество включаемых заголовков Windows
-#include <windows.h>
+#include <windows.h>        // Используется для настройки консоли
 #endif
 
 using namespace std;
@@ -125,6 +124,7 @@ void reg(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
     }    
 }
 
+
 int main(int argc, char const *argv[])
 {
 
@@ -135,13 +135,15 @@ int main(int argc, char const *argv[])
     // исправляет не коректную запись в string русских символов в консоле
     // распространяет локализацию на весь проект 
     #ifdef _WIN32
-    SetConsoleCP(CP_UTF8);
-    SetConsoleOutputCP(CP_UTF8);
+        SetConsoleCP(CP_UTF8);
+        SetConsoleOutputCP(CP_UTF8);
     #endif
     
     // Для Linux/Mac
-    // пока не требуется, но можно допонить макросом как WIN32
-    //std::locale::global(std::locale("ru_RU.UTF-8"));
+    // был ли определен SET_GLOBAL_LOCALE_LINUX ? да (в cmake) или нет (в cmake)
+    #ifdef SET_GLOBAL_LOCALE_LINUX
+        std::locale::global(std::locale("ru_RU.UTF-8"));
+    #endif
 
     char menu = '9';
     shared_ptr<Database> database(new Database());
@@ -160,10 +162,10 @@ int main(int argc, char const *argv[])
 
         // Обработка ввода
         if (!(cin >> menu)) {
-            cin.clear(); // Сброс флагов ошибок
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистка буфера
+            cin.clear();                                                // Сброс флагов ошибок
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');        // Очистка буфера
             cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
-            menu = '9'; // Предотвращаем выход из цикла
+            menu = '9';                                                 // Предотвращаем выход из цикла
             continue;
         }
 
@@ -182,9 +184,6 @@ int main(int argc, char const *argv[])
             cout << _YELLOW << "Не верно введено значение, попробуй еще раз" << _CLEAR << endl;
             break;
         }
-
     }
-    
-    
     return 0;
 }

@@ -16,8 +16,7 @@ Database::~Database()
     
 }
 
-// Добавить пользовател принимает и временные, и существующие объекты
-// !! Проверка на уникальность логина осуществляется в классе User, можно использовать без проверок
+// Добавить пользовател - принимает и временные, и существующие объекты
 void Database::setUser(std::shared_ptr<User> user){
     this->usersInChat.push_back(std::move(user));       // Перемещаем, чтобы избежать копирования
 }
@@ -28,7 +27,6 @@ std::vector<std::shared_ptr<User>> Database::getAllUsersInChat() const{
 }
 
 // Получить указатель на пользователя по логину (уникален для каждого)
-// !! Проверять на пустоту nullptr !!
 std::shared_ptr<User> Database::getOneUserByLogin(std::string login) const{
     //если список пользовватель пуст - nullptr
     if (this->usersInChat.empty())
@@ -45,10 +43,9 @@ std::shared_ptr<User> Database::getOneUserByLogin(std::string login) const{
 
     // не нашли пользователя возвращаем nullptr
     return nullptr;
-    
 }
 
-
+// регистрация пользователя
 std::shared_ptr<User> Database::regUser(
     const std::string& login,
     const std::string& password,
