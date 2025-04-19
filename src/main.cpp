@@ -183,7 +183,5 @@ int main(int argc, char const *argv[])
             break;
         }
     }
-    int *arr = new int[10]();
-    delete[] arr;
     return 0;
 }
