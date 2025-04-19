@@ -40,9 +40,9 @@ add_executable(Chat
 # Подключить заголовки из include/
 #target_include_directories(Chat PRIVATE include/)
 # Явно укажите include-директории для cppcheck
-target_include_directories(Chat PRIVATE 
-    include/
+target_include_directories(Chat PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 
