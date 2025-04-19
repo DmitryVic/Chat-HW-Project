@@ -16,16 +16,17 @@ class ChatHared;
 class User
 {
 private:
-    std::string _login;
-    std::string _pasword;
-    std::string _name;
+    std::string _login; 
+    std::string _pasword; 
+    std::string _name; 
     std::vector<std::shared_ptr<ChatPrivate>> _connectChatPrivate;
 public:
     // Передать логин, пароль, имя
     // Проверка на создание в БД, БД владееет пользователями, создание Юзера через нее
-    User(std::string login, std::string pasword, std::string name);
+    User(const std::string& login, const std::string& pasword, const std::string& name)
+    : _login(login), _pasword(pasword), _name(name) {}
     
-    ~User();
+    ~User() {}
     
     // Получить логин
     std::string getLogin() const;

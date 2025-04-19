@@ -27,7 +27,7 @@ std::vector<std::shared_ptr<User>> Database::getAllUsersInChat() const{
 }
 
 // Получить указатель на пользователя по логину (уникален для каждого)
-std::shared_ptr<User> Database::getOneUserByLogin(std::string login) const{
+std::shared_ptr<User> Database::getOneUserByLogin(const std::string &login) const{
     //если список пользовватель пуст - nullptr
     if (this->usersInChat.empty())
     {

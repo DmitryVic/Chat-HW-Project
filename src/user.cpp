@@ -7,9 +7,9 @@
 #include "chathared.h"
 
 
-User::User(std::string login, std::string pasword, std::string name): _login(login), _pasword(pasword), _name(name) {}
 
-User::~User() {}
+
+
 
 // Получить логин
 std::string User::getLogin() const{

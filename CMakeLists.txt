@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(Chat)
 
+# Генерация compile_commands.json для cppcheck
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+#путь для генерации
+set(CMAKE_EXPORT_COMPILE_COMMANDS_FILE "${CMAKE_SOURCE_DIR}/compile_commands.json")
+
 # СПринудительно установить стандарт c++ 17
 # Исправление опечатки в STANDART -> STANDARD
 set(CMAKE_CXX_STANDARD 17)
@@ -33,4 +38,25 @@ add_executable(Chat
     )
 
 # Подключить заголовки из include/
-target_include_directories(Chat PRIVATE include/)
+#target_include_directories(Chat PRIVATE include/)
+# Явно укажите include-директории для cppcheck
+target_include_directories(Chat PRIVATE 
+    include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+
+# Автоматический запуск CppCheck ТОЛЬКО в Debug
+find_program(CPPCHECK cppcheck)
+if(CPPCHECK AND CMAKE_BUILD_TYPE STREQUAL "Debug")  # AND CMAKE_BUILD_TYPE STREQUAL "Debug" только в дебагере
+    add_custom_target(cppcheck ALL
+        COMMAND ${CPPCHECK} 
+            --project=${CMAKE_BINARY_DIR}/compile_commands.json
+            --enable=warning,performance,portability,style
+            --suppress=missingIncludeSystem
+            --suppressions-list=${CMAKE_SOURCE_DIR}/.cppcheck-suppressions
+            --inline-suppr
+            --check-level=exhaustive
+        COMMENT "Запуск CppCheck (только в Debug-сборке)..."
+    )
+endif()

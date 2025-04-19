@@ -11,13 +11,13 @@ class ChatHared : public Chat
 {
 private:
 std::string _nameChat;
-//Список участников Берется из базы данных
+//Список участников Берется из базы данных 
 
 public:
 
     // передать название чата
-    ChatHared(std::string nameChat);
-    ~ChatHared();
+    explicit ChatHared(const std::string &nameChat);
+    ~ChatHared() override;
 
     // Должен предать все сообщения из historyChat, форматируя текст относительно пользователя User, тоесть того, кто открыл чат
     std::string getAllMessage(std::weak_ptr<User> user) const override;

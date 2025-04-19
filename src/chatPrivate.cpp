@@ -22,7 +22,7 @@ ChatPrivate::ChatPrivate(std::weak_ptr<User> thisUser, std::weak_ptr<User> other
     }
 }
 
-
+ 
 ChatPrivate::~ChatPrivate() = default;
 
 // Получить имена всех участников

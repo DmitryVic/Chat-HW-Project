@@ -11,12 +11,12 @@
 
 
 // Конструктор Деструктор
-ChatHared::ChatHared(std::string nameChat)
+ChatHared::ChatHared(const std::string &nameChat) 
+    : _nameChat(nameChat)  // Инициализация через const &
 {
-    if (nameChat.size() == 0)
-        throw ErrorChat();                              // Пустое название чата
-
-    this->_nameChat = nameChat;                         // Название чата
+    if (_nameChat.empty()) {  // Проверка уже после инициализации
+        throw ErrorChat();    // Пустое название чата
+    }
 }
 
 ChatHared::~ChatHared() = default;
@@ -100,4 +100,4 @@ bool ChatHared::addMessage(std::weak_ptr<User> sender, const std::string& msg){
 // Получить название чата
 std::string ChatHared::getNameChat() const{
     return this->_nameChat;
-}
+} 

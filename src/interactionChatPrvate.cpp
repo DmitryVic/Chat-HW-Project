@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 #include <limits> //Для  cin.ignore(numeric_limits<streamsize>::max(), '\n');
-using namespace std;
+using namespace std; 
 
 
 //открывает приватный чат, получает от пользователя сообщеня при "0" - выход, передать базу данных, залогированнного пользователя, выброный чат
@@ -190,7 +190,7 @@ void menuChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
             cin.clear();                                                                         // Сброс флагов ошибок
             cin.ignore(numeric_limits<streamsize>::max(), '\n');                                 // Очистка буфера
             cout << _YELLOW << "Ошибка: введите число." << _CLEAR << endl;
-            char menu = '9';                                                                     // Предотвращаем возможное зацикливание
+            menu = '9';                                                                     // Предотвращаем возможное зацикливание
             continue;
         }
 

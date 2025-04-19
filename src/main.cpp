@@ -98,7 +98,6 @@ void reg(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
     string login;
     string pass;
     string name;
-
     cin.clear(); // Сбрасывает флаги ошибок
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очищает буфер до новой строки
 
@@ -110,11 +109,10 @@ void reg(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
 
     cout << "Введите свое имя" << endl;
     getline(cin, name);
-
     auto userAuthorization = db->regUser(login, pass, name);
     if (!userAuthorization)
     {
-        cout << _MAGENTA << "Не удалось зарегистрироваться, возврат в главное меню" << _CLEAR << endl;
+        cout << _MAGENTA << "Не удалось зарегистрироваться, возврат в главное меню" << _CLEAR ;
         return;
     }
     else
@@ -185,5 +183,7 @@ int main(int argc, char const *argv[])
             break;
         }
     }
+    int *arr = new int[10]();
+    delete[] arr;
     return 0;
 }

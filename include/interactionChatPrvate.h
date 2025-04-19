@@ -13,7 +13,7 @@ void openChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorizati
 
 // предоставляет доступ выбора чата из имеющихся
 void  UserChoiceChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization);
-
+ 
 // предоставляет варианты кому написать из пользователей, создает чат если нет, то сообщает об этом
 void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthorization);
 

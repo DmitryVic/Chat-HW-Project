@@ -23,7 +23,7 @@ public:
     std::vector<std::shared_ptr<User>> getAllUsersInChat() const;
 
     // Получить указатель на пользователя по логину (уникален для каждого)
-    std::shared_ptr<User> getOneUserByLogin(std::string login) const;
+    std::shared_ptr<User> getOneUserByLogin(const std::string &login) const;
 
     
     // Создает объект User и добавляет его в usersInChat
