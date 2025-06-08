@@ -3,6 +3,7 @@
 #include "user.h" 
 #include "exept.h"
 #include <iostream>
+#include <set>
 
 
 
@@ -18,11 +19,11 @@ Database::~Database()
 
 // Добавить пользовател - принимает и временные, и существующие объекты
 void Database::setUser(std::shared_ptr<User> user){
-    this->usersInChat.push_back(std::move(user));       // Перемещаем, чтобы избежать копирования
+    this->usersInChat.insert(std::move(user));       // Перемещаем, чтобы избежать копирования
 }
 
 // Получить список всех пользователей
-std::vector<std::shared_ptr<User>> Database::getAllUsersInChat() const{
+std::set<std::shared_ptr<User>> Database::getAllUsersInChat() const{
     return this->usersInChat;
 }
 
@@ -68,7 +69,7 @@ std::shared_ptr<User> Database::regUser(
                 // Пытаемся создать пользователя
                 auto user = std::make_shared<User>(login, password, name);
                 // Добавляем копию указателя в базу данных
-                this->usersInChat.push_back(user);
+                this->usersInChat.insert(user);
                 // Возвращаем указатель на созданного юзера
                 return user;
             }

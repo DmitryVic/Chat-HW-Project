@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <vector>
+#include <set>
 #include <memory>
 
 // для хранения указателей на класс User
@@ -11,7 +11,7 @@ class Database
 {
 private:
     //Список пользователей
-    std::vector<std::shared_ptr<User>> usersInChat;
+    std::set<std::shared_ptr<User>> usersInChat;
 public:
     Database();
     ~Database();
@@ -20,7 +20,7 @@ public:
     void setUser(std::shared_ptr<User> user);
 
     // Получить список всех пользователей
-    std::vector<std::shared_ptr<User>> getAllUsersInChat() const;
+    std::set<std::shared_ptr<User>> getAllUsersInChat() const;
 
     // Получить указатель на пользователя по логину (уникален для каждого)
     std::shared_ptr<User> getOneUserByLogin(const std::string &login) const;

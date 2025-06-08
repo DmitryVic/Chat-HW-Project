@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
+#include <algorithm>
 #include <limits> //Для  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 using namespace std; 
 
@@ -87,9 +89,8 @@ void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthoriza
     size_t userNamberInput = 999;                                          // для получения номера пользователя и открытия чата
     while (userNamberInput != 0)
     {
-        vector<size_t> userIndexList;                                        // для сохранения индексов пользователей
-        vector<shared_ptr<User>> userList = db->getAllUsersInChat();        // берем копию списка пользователей для безопасности
-        size_t sizeChatPrivate = userList.size();                           // размер полученного листа пользователей                
+        vector<shared_ptr<User>> userIndexList;                                        // для сохранения индексов пользователей ввод значения пользователя = индеексу vector
+        set<shared_ptr<User>> userList = db->getAllUsersInChat();                       // берем копию списка пользователей для безопасности
 
         cout << _GREY_BG << "\n\n\t\tСписок пользователей " << "\n" << _CLEAR << endl << endl;
         if (userList.size() <= 1)
@@ -98,16 +99,17 @@ void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthoriza
         }
         else
         {
-            for (size_t i = 0; i < sizeChatPrivate; i++)
+            int count = 1;
+            for (auto& it : userList)
             {
-                if (userList[i]->getLogin() == userAuthorization->getLogin())  // пропускаем себя
+                if (it->getLogin() == userAuthorization->getLogin())  // пропускаем себя
                 {
                     continue;
                 }
                 else
                 {
-                    cout << "ID [ " << i + 1 << " ] " << userList[i]->getName() << endl;
-                    userIndexList.push_back(i + 1);
+                    cout << "ID [ " << count++ << " ] " << it->getName() << endl;
+                    userIndexList.push_back(it);
                 }
             }
             cout << endl;
@@ -129,17 +131,17 @@ void createChatPrivate(shared_ptr<Database>& db, shared_ptr<User>& userAuthoriza
         if (userNamberInput == 0)                                           // Выходим при 0
             return;
 
-        if (contains(userIndexList, userNamberInput))                       // проверяет есть ли элемент в векторе шаблонным методом
+        if (userNamberInput <= userIndexList.size())                      // Проверка диапозона Condition 'userNamberInput>=1' is always true
         {
             // Если данный чат еще не создан - запрашиваем через метод класса юзер, который перебирает все чаты, запрашивая у метода чата наличие юзера
-            if (!userAuthorization->userInChatsP(weak_ptr<User>(userList[userNamberInput - 1])))
+            if (!userAuthorization->userInChatsP(weak_ptr<User>(userIndexList[userNamberInput - 1])))
             {
                 shared_ptr<ChatPrivate> chatP = make_shared<ChatPrivate>(       //создаем чат
                 weak_ptr<User>(userAuthorization), 
-                weak_ptr<User>(userList[userNamberInput - 1])
+                weak_ptr<User>(userIndexList[userNamberInput - 1])
                 );
                 userAuthorization->setChat(chatP);                               // Записали нашему пользователю созданый чат
-                userList[userNamberInput - 1]->setChat(chatP);                  // Записали выбраному пользомателю созданый чат
+                userIndexList[userNamberInput - 1]->setChat(chatP);                  // Записали выбраному пользомателю созданый чат
                 openChatPrivate(db, userAuthorization, chatP);                  // Запускаем чат
             }
             else
