@@ -71,4 +71,4 @@ if(CPPCHECK AND CMAKE_BUILD_TYPE STREQUAL "Debug")
 ### Список изменений:
 
 - `Database` теперь хранит пользователей в контейнере **set**
-
+- Пароли пользователей раняться в `std::hash`

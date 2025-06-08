@@ -14,6 +14,8 @@
 #include <limits> //Для  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 #include <clocale> //для правильной лолокализации
 #include <locale>
+#include "hashPass.h"
+
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN  // Уменьшает количество включаемых заголовков Windows
@@ -79,7 +81,7 @@ void authorization(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
     cout << "Введите пароль" << endl;
     getline(cin, pass);
     
-    auto userAuthorization = db->autorizUser(login, pass);
+    auto userAuthorization = db->autorizUser(login, hashPassword(pass));
     if (!userAuthorization)
     {
         cout << _MAGENTA << "Не удалось авторизоваться, возврат в главное меню" << _CLEAR << endl;
@@ -109,7 +111,7 @@ void reg(shared_ptr<Database>& db, shared_ptr<ChatHared>& haredChat){
 
     cout << "Введите свое имя" << endl;
     getline(cin, name);
-    auto userAuthorization = db->regUser(login, pass, name);
+    auto userAuthorization = db->regUser(login, hashPassword(pass), name);
     if (!userAuthorization)
     {
         cout << _MAGENTA << "Не удалось зарегистрироваться, возврат в главное меню" << _CLEAR ;

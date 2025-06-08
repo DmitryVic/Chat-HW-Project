@@ -5,6 +5,7 @@
 #include "database.h"
 
 
+
 class ChatPrivate;
 class ChatHared;
 
@@ -17,7 +18,7 @@ class User
 {
 private:
     std::string _login; 
-    std::string _pasword; 
+    std::string _pasword; //храниться хэш
     std::string _name; 
     std::vector<std::shared_ptr<ChatPrivate>> _connectChatPrivate;
 public:

@@ -95,7 +95,7 @@ std::shared_ptr<User> Database::autorizUser(
     {
         if (user->getPass() == password )        //если пароль совпадает логин уже и так совпал, нашелся же пользователь
         {
-            return user;                         // std::move(user) нарушает оптимизацию компилятора RVO (Return Value Optimization) - атомарная операция
+            return user;                         
         }
         else
         {
